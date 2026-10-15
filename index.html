@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Listening & Speaking Master (100單字挑戰)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-slate-100 min-h-screen flex flex-col">
+
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-indigo-500 to-pink-500 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-headphones-simple text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg text-white tracking-wide">SoundVocab 100</h1>
+                    <p class="text-xs text-indigo-300">英文聽力與口說挑戰派對</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-1 sm:space-x-2 mt-2 sm:mt-0 bg-slate-800/80 p-1 rounded-xl border border-slate-700/50">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all bg-indigo-600 text-white shadow">
+                    <i class="fa-solid fa-house-chimney mr-1.5"></i>首頁儀表板
+                </button>
+                <button onclick="switchTab('listening')" id="nav-listening" class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-ear-listen mr-1.5"></i>聽音猜義
+                </button>
+                <button onclick="switchTab('speaking')" id="nav-speaking" class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-microphone-lines mr-1.5"></i>口說特訓
+                </button>
+                <button onclick="switchTab('vocabulary')" id="nav-vocabulary" class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-book-open mr-1.5"></i>100字庫
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
+
+        <!-- VIEW: DASHBOARD -->
+        <section id="view-dashboard" class="space-y-6">
+            <!-- Welcome Banner -->
+            <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600/30 via-purple-600/30 to-pink-600/30 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="space-y-2">
+                        <span class="bg-indigo-500/20 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-500/30">
+                            Web Speech API 驅動
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">點燃你的英語聽說能力 🚀</h2>
+                        <p class="text-slate-300 text-sm sm:text-base max-w-xl">
+                            精選 100 個實用生活與職場高頻字彙、片語。透過真人發音合成與語音辨識驗證，全面提升聽力與口說表現！
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('listening')" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-indigo-500/30 transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-play mr-2"></i>開始聽力測驗
+                        </button>
+                        <button onclick="switchTab('speaking')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-6 py-3 rounded-xl transition">
+                            <i class="fa-solid fa-microphone mr-2"></i>口說評測
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl backdrop-blur-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-medium uppercase tracking-wider">已練習次數</span>
+                        <i class="fa-solid fa-bolt text-amber-400"></i>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white" id="stat-total-plays">0</div>
+                    <p class="text-xs text-slate-400 mt-1">累積答題數</p>
+                </div>
+                <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl backdrop-blur-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-medium uppercase tracking-wider">正確率</span>
+                        <i class="fa-solid fa-bullseye text-emerald-400"></i>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400" id="stat-accuracy">0%</div>
+                    <p class="text-xs text-slate-400 mt-1">答對比例</p>
+                </div>
+                <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl backdrop-blur-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-medium uppercase tracking-wider">口說通關</span>
+                        <i class="fa-solid fa-microphone-lines text-pink-400"></i>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-pink-400" id="stat-spoken-count">0</div>
+                    <p class="text-xs text-slate-400 mt-1">發音正確單字數</p>
+                </div>
+                <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl backdrop-blur-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-medium uppercase tracking-wider">字庫總量</span>
+                        <i class="fa-solid fa-book text-indigo-400"></i>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-indigo-400">100</div>
+                    <p class="text-xs text-slate-400 mt-1">精選核心單字</p>
+                </div>
+            </div>
+
+            <!-- Quick Start Card -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 backdrop-blur-md">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                    <i class="fa-solid fa-fire text-amber-500 mr-2"></i>熱門功能與學習建議
+                </h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold mb-3">1</div>
+                            <h4 class="font-bold text-white mb-1">聽音辨義測驗</h4>
+                            <p class="text-xs text-slate-300">系統自動唸出單字，從四個中文選項中挑選正確含意，考驗你的真實聽力反應。</p>
+                        </div>
+                        <button onclick="switchTab('listening')" class="mt-4 text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center">
+                            前往挑戰 <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                        </button>
+                    </div>
+                    <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold mb-3">2</div>
+                            <h4 class="font-bold text-white mb-1">發音跟讀挑戰</h4>
+                            <p class="text-xs text-slate-300">看題目開口大聲唸出英文，瀏覽器語音辨識會即時比對你的口語是否標準！</p>
+                        </div>
+                        <button onclick="switchTab('speaking')" class="mt-4 text-xs font-semibold text-pink-400 hover:text-pink-300 flex items-center">
+                            開始錄音 <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                        </button>
+                    </div>
+                    <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold mb-3">3</div>
+                            <h4 class="font-bold text-white mb-1">100字庫全覽</h4>
+                            <p class="text-xs text-slate-300">隨時隨地查閱完整100字清單，點擊喇叭即可聆聽標準美式/英式發音。</p>
+                        </div>
+                        <button onclick="switchTab('vocabulary')" class="mt-4 text-xs font-semibold text-purple-400 hover:text-purple-300 flex items-center">
+                            瀏覽清單 <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: LISTENING QUIZ -->
+        <section id="view-listening" class="hidden space-y-6">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl max-w-2xl mx-auto shadow-2xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-indigo-400 font-bold">Listening Comprehension</span>
+                        <h3 class="text-xl font-bold text-white">聽音辨義挑戰</h3>
+                    </div>
+                    <div class="text-right">
+                        <span id="quiz-score" class="text-sm font-semibold text-emerald-400">得分: 0</span>
+                        <div class="text-xs text-slate-400" id="quiz-progress">題目: 1 / 10</div>
+                    </div>
+                </div>
+
+                <!-- Audio Play Button Big -->
+                <div class="text-center py-8">
+                    <div class="inline-block relative">
+                        <div class="absolute inset-0 bg-indigo-500/20 rounded-full pulse-ring" id="audio-pulse"></div>
+                        <button onclick="playCurrentQuizAudio()" class="relative z-10 w-24 h-24 bg-gradient-to-tr from-indigo-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 rounded-full flex items-center justify-center shadow-xl shadow-indigo-500/40 text-white text-3xl transition transform active:scale-95">
+                            <i class="fa-solid fa-volume-high" id="speaker-icon"></i>
+                        </button>
+                    </div>
+                    <p class="text-slate-300 text-sm mt-4 font-medium">點擊按鈕或自動播放聆聽單字</p>
+                    <button onclick="playCurrentQuizAudio(0.7)" class="mt-2 text-xs text-indigo-400 hover:text-indigo-300 bg-indigo-950/60 px-3 py-1 rounded-full border border-indigo-800/50">
+                        <i class="fa-solid fa-gauge-low mr-1"></i>慢速播放
+                    </button>
+                </div>
+
+                <!-- Options -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6" id="quiz-options-container">
+                    <!-- Dynamic options will be injected here -->
+                </div>
+
+                <!-- Result feedback banner -->
+                <div id="quiz-feedback" class="mt-6 p-4 rounded-2xl text-center hidden font-medium text-sm"></div>
+
+                <div class="mt-8 flex justify-between items-center pt-4 border-t border-slate-800">
+                    <button onclick="restartListeningQuiz()" class="text-xs text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-rotate-right mr-1"></i>重新開始測驗
+                    </button>
+                    <button id="next-quiz-btn" onclick="nextListeningQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-6 py-2.5 rounded-xl transition">
+                        下一題 <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: SPEAKING PRACTICE -->
+        <section id="view-speaking" class="hidden space-y-6">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl max-w-2xl mx-auto shadow-2xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-pink-400 font-bold">Pronunciation Check</span>
+                        <h3 class="text-xl font-bold text-white">口說發音特訓</h3>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-sm font-semibold text-pink-400" id="speak-stats">已成功: 0</span>
+                    </div>
+                </div>
+
+                <!-- Target Word Card -->
+                <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 text-center space-y-3">
+                    <p class="text-xs text-slate-400 uppercase tracking-widest">請大聲朗讀以下單字或片語</p>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-wide" id="target-speak-word">Loading...</h2>
+                    <p class="text-indigo-300 text-base" id="target-speak-def">...</p>
+                    <div class="flex justify-center space-x-2 pt-2">
+                        <button onclick="playTargetSpeakAudio()" class="bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 transition">
+                            <i class="fa-solid fa-volume-high mr-1"></i>聽示範發音
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Microphone Action Area -->
+                <div class="text-center py-8">
+                    <button id="mic-btn" onclick="toggleSpeechRecognition()" class="w-24 h-24 bg-gradient-to-tr from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 rounded-full flex items-center justify-center shadow-xl shadow-pink-500/30 text-white text-3xl mx-auto transition transform active:scale-95">
+                        <i class="fa-solid fa-microphone" id="mic-icon"></i>
+                    </button>
+                    <p id="mic-status-text" class="text-slate-300 text-sm mt-4 font-medium">點擊咪高峰開始說話</p>
+                    <div class="mt-3 text-sm font-mono bg-slate-950/60 px-4 py-2 rounded-xl border border-slate-800 inline-block text-slate-300 max-w-md truncate" id="spoken-result-box">
+                        辨識結果將顯示於此...
+                    </div>
+                </div>
+
+                <!-- Feedback Display -->
+                <div id="speak-feedback" class="p-4 rounded-2xl text-center hidden font-medium text-sm"></div>
+
+                <div class="mt-8 flex justify-between items-center pt-4 border-t border-slate-800">
+                    <button onclick="loadNewSpeakWord()" class="text-xs text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-forward mr-1"></i>換下一個單字
+                    </button>
+                    <span class="text-xs text-slate-500">支援 Chrome / Edge / Safari 語音辨識</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: VOCABULARY BANK (100 words) -->
+        <section id="view-vocabulary" class="hidden space-y-6">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-purple-400 font-bold">Vocabulary Bank</span>
+                        <h3 class="text-xl font-bold text-white">100 核心單字與片語清單</h3>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                        <div class="relative flex-grow md:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                            <input type="text" id="vocab-search" oninput="filterVocabulary()" placeholder="搜尋英文或中文..." class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <select id="vocab-category-filter" onchange="filterVocabulary()" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            <option value="all">所有分類 (100)</option>
+                            <option value="Daily">日常生活 (Daily)</option>
+                            <option value="Work">職場商業 (Work)</option>
+                            <option value="Travel">旅遊交通 (Travel)</option>
+                            <option value="Emotion">情感心理 (Emotion)</option>
+                            <option value="Idiom">實用片語 (Idiom)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Vocabulary Table / Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto pr-2" id="vocab-grid">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900/60 border-t border-slate-800 py-4 mt-auto text-center text-xs text-slate-400">
+        <p>SoundVocab 100 &copy; 2026 | Powered by Web Speech API & Tailwind CSS</p>
+    </footer>
+
+    <script>
+        // 100 English Vocabulary & Phrases Database
+        const vocabularyList = [
+            // Daily Life (1-25)
+            { id: 1, word: "Achieve", phonetic: "/əˈtʃiːv/", meaning: "實現、達到", category: "Daily" },
+            { id: 2, word: "Benefit", phonetic: "/ˈbenɪfɪt/", meaning: "好處、利益", category: "Daily" },
+            { id: 3, word: "Curious", phonetic: "/ˈkjʊriəs/", meaning: "好奇的", category: "Daily" },
+            { id: 4, word: "Determine", phonetic: "/dɪˈtɜːrmɪn/", meaning: "決定、下決心", category: "Daily" },
+            { id: 5, word: "Efficient", phonetic: "/ɪˈfɪʃnt/", meaning: "效率高的", category: "Daily" },
+            { id: 6, word: "Flexible", phonetic: "/ˈfleksəbl/", meaning: "具彈性的、靈活的", category: "Daily" },
+            { id: 7, word: "Generate", phonetic: "/ˈdʒenəreɪt/", meaning: "產生、引起", category: "Daily" },
+            { id: 8, word: "Hesitate", phonetic: "/ˈhezɪteɪt/", meaning: "猶豫", category: "Daily" },
+            { id: 9, word: "Inspire", phonetic: "/ɪnˈspaɪər/", meaning: "啟發、鼓舞", category: "Daily" },
+            { id: 10, word: "Journey", phonetic: "/ˈdʒɜːrni/", meaning: "旅行、歷程", category: "Daily" },
+            { id: 11, word: "Knowledge", phonetic: "/ˈnɑːlɪdʒ/", meaning: "知識、學問", category: "Daily" },
+            { id: 12, word: "Logical", phonetic: "/ˈlɑːdʒɪkl/", meaning: "合乎邏輯的", category: "Daily" },
+            { id: 13, word: "Maintain", phonetic: "/meɪnˈteɪn/", meaning: "維持、保養", category: "Daily" },
+            { id: 14, word: "Negotiate", phonetic: "/nɪˈɡoʊʃieɪt/", meaning: "談判、協商", category: "Daily" },
+            { id: 15, word: "Observe", phonetic: "/əbˈzɜːrv/", meaning: "觀察、遵守", category: "Daily" },
+            { id: 16, word: "Priority", phonetic: "/praɪˈɔːrəti/", meaning: "優先事項", category: "Daily" },
+            { id: 17, word: "Quality", phonetic: "/ˈkwɑːləti/", meaning: "品質、特質", category: "Daily" },
+            { id: 18, word: "Recognize", phonetic: "/ˈrekəɡnaɪz/", meaning: "認出、承認", category: "Daily" },
+            { id: 19, word: "Significant", phonetic: "/sɪɡˈnɪfɪkənt/", meaning: "重要的、顯著的", category: "Daily" },
+            { id: 20, word: "Translate", phonetic: "/trænzˈleɪt/", meaning: "翻譯", category: "Daily" },
+            { id: 21, word: "Ultimate", phonetic: "/ˈʌltɪmət/", meaning: "最終的、極致的", category: "Daily" },
+            { id: 22, word: "Valuable", phonetic: "/ˈvæljuəbl/", meaning: "有價值的", category: "Daily" },
+            { id: 23, word: "Wealth", phonetic: "/welθ/", meaning: "財富、大量", category: "Daily" },
+            { id: 24, word: "Youth", phonetic: "/juːθ/", meaning: "青春、青年時期", category: "Daily" },
+            { id: 25, word: "Zone", phonetic: "/zoʊn/", meaning: "地帶、區域", category: "Daily" },
+
+            // Work & Business (26-50)
+            { id: 26, word: "Appointment", phonetic: "/əˈpɔɪntmənt/", meaning: "約會、預約", category: "Work" },
+            { id: 27, word: "Budget", phonetic: "/ˈbʌdʒɪt/", meaning: "預算", category: "Work" },
+            { id: 28, word: "Colleague", phonetic: "/ˈkɑːliːɡ/", meaning: "同事", category: "Work" },
+            { id: 29, word: "Deadline", phonetic: "/ˈdedlaɪn/", meaning: "截止期限", category: "Work" },
+            { id: 30, word: "Enterprise", phonetic: "/ˈentərpraɪz/", meaning: "企業、事業", category: "Work" },
+            { id: 31, word: "Feedback", phonetic: "/ˈfiːdbæk/", meaning: "回饋、意見", category: "Work" },
+            { id: 32, word: "Guarantee", phonetic: "/ˌɡærənˈtiː/", meaning: "保證", category: "Work" },
+            { id: 33, word: "Headquarters", phonetic: "/ˈhedkwɔːrtərz/", meaning: "總部", category: "Work" },
+            { id: 34, word: "Investment", phonetic: "/ɪnˈvestmənt/", meaning: "投資", category: "Work" },
+            { id: 35, word: "Job description", phonetic: "/dʒɑːb dɪˈskrɪpʃn/", meaning: "工作職掌說明", category: "Work" },
+            { id: 36, word: "Keynote", phonetic: "/ˈkiːnoʊt/", meaning: "主題演說", category: "Work" },
+            { id: 37, word: "Leadership", phonetic: "/ˈliːdərʃɪp/", meaning: "領導能力", category: "Work" },
+            { id: 38, word: "Marketing", phonetic: "/ˈmɑːrkɪtɪŋ/", meaning: "市場行銷", category: "Work" },
+            { id: 39, word: "Objective", phonetic: "/əbˈdʒektɪv/", meaning: "目標、客觀的", category: "Work" },
+            { id: 40, word: "Payroll", phonetic: "/ˈpeɪroʊl/", meaning: "薪資名冊", category: "Work" },
+            { id: 41, word: "Quota", phonetic: "/ˈkwoʊtə/", meaning: "配額、定額", category: "Work" },
+            { id: 42, word: "Resume", phonetic: "/ˈrezumeɪ/", meaning: "履歷表", category: "Work" },
+            { id: 43, word: "Strategy", phonetic: "/ˈstrætədʒi/", meaning: "策略", category: "Work" },
+            { id: 44, word: "Task", phonetic: "/tæsk/", meaning: "任務、作業", category: "Work" },
+            { id: 45, word: "Upgrade", phonetic: "/ˈʌpɡreɪd/", meaning: "升級", category: "Work" },
+            { id: 46, word: "Vacancy", phonetic: "/ˈveɪkənsi/", meaning: "職缺、空房", category: "Work" },
+            { id: 47, word: "Workforce", phonetic: "/ˈwɜːrkfɔːrs/", meaning: "勞動力、員工總數", category: "Work" },
+            { id: 48, word: "Benchmark", phonetic: "/ˈbentʃmɑːrk/", meaning: "基準、水準點", category: "Work" },
+            { id: 49, word: "Consensus", phonetic: "/kənˈsensəs/", meaning: "共識", category: "Work" },
+            { id: 50, word: "Delegate", phonetic: "/ˈdelɪɡeɪt/", meaning: "委派、代表", category: "Work" },
+
+            // Travel & Transport (51-75)
+            { id: 51, word: "Accommodation", phonetic: "/əˌkɑːməˈdeɪʃn/", meaning: "住宿", category: "Travel" },
+            { id: 52, word: "Boarding pass", phonetic: "/ˈbɔːrdɪŋ pæs/", meaning: "登機證", category: "Travel" },
+            { id: 53, word: "Customs", phonetic: "/ˈkʌstəmz/", meaning: "海關", category: "Travel" },
+            { id: 54, word: "Destination", phonetic: "/ˌdestɪˈneɪʃn/", meaning: "目的地", category: "Travel" },
+            { id: 55, word: "Excursion", phonetic: "/ɪkˈskɜːrʒn/", meaning: "遠足、短途旅行", category: "Travel" },
+            { id: 56, word: "Flight", phonetic: "/flaɪt/", meaning: "班機、飛行", category: "Travel" },
+            { id: 57, word: "Guidebook", phonetic: "/ˈɡaɪdbʊk/", meaning: "旅遊指南", category: "Travel" },
+            { id: 58, word: "Itinerary", phonetic: "/aɪˈtɪnəreri/", meaning: "行程表", category: "Travel" },
+            { id: 59, word: "Jet lag", phonetic: "/dʒet læɡ/", meaning: "時差反應", category: "Travel" },
+            { id: 60, word: "Luggage", phonetic: "/ˈlʌɡɪdʒ/", meaning: "行李", category: "Travel" },
+            { id: 61, word: "Navigation", phonetic: "/ˌnævɪˈɡeɪʃn/", meaning: "導航", category: "Travel" },
+            { id: 62, word: "Passport", phonetic: "/ˈpæspɔːrt/", meaning: "護照", category: "Travel" },
+            { id: 63, word: "Reservation", phonetic: "/ˌrezərˈveɪʃn/", meaning: "預約、保留", category: "Travel" },
+            { id: 64, word: "Souvenir", phonetic: "/ˌsuːvəˈnɪr/", meaning: "紀念品", category: "Travel" },
+            { id: 65, word: "Terminal", phonetic: "/ˈtɜːrmɪnl/", meaning: "航廈、終點站", category: "Travel" },
+            { id: 66, word: "Transit", phonetic: "/ˈtrænzɪt/", meaning: "過境、運輸", category: "Travel" },
+            { id: 67, word: "Voyage", phonetic: "/ˈvɔɪɪdʒ/", meaning: "航海、航行", category: "Travel" },
+            { id: 68, word: "Check-in", phonetic: "/tʃek ɪn/", meaning: "辦理入住/登機", category: "Travel" },
+            { id: 69, word: "Expressway", phonetic: "/ɪkˈspresweɪ/", meaning: "快速道路", category: "Travel" },
+            { id: 70, word: "Sightseeing", phonetic: "/ˈsaɪtsiːɪŋ/", meaning: "觀光、遊覽", category: "Travel" },
+            { id: 71, word: "Platform", phonetic: "/ˈplætfɔːrm/", meaning: "月台、平台", category: "Travel" },
+            { id: 72, word: "Departure", phonetic: "/dɪˈpɑːrtʃər/", meaning: "出發、班機離站", category: "Travel" },
+            { id: 73, word: "Arrival", phonetic: "/əˈraɪvl/", meaning: "抵達、到達", category: "Travel" },
+            { id: 74, word: "Cruise", phonetic: "/kruːz/", meaning: "郵輪旅遊", category: "Travel" },
+            { id: 75, word: "Highway", phonetic: "/ˈhaɪweɪ/", meaning: "公路、高速公路", category: "Travel" },
+
+            // Emotion & Psychology (76-90)
+            { id: 76, word: "Anxious", phonetic: "/ˈæŋkʃəs/", meaning: "焦慮的、擔心的", category: "Emotion" },
+            { id: 77, word: "Confident", phonetic: "/ˈkɑːnfɪdənt/", meaning: "有信心的", category: "Emotion" },
+            { id: 78, word: "Depressed", phonetic: "/dɪˈprest/", meaning: "沮喪的、憂鬱的", category: "Emotion" },
+            { id: 79, word: "Enthusiastic", phonetic: "/ɪnˌθuːziˈæstɪk/", meaning: "熱情的", category: "Emotion" },
+            { id: 80, word: "Frustrated", phonetic: "/ˈfrʌstreɪtɪd/", meaning: "受挫的、沮喪的", category: "Emotion" },
+            { id: 81, word: "Grateful", phonetic: "/ˈɡreɪtfl/", meaning: "感恩的、感激的", category: "Emotion" },
+            { id: 82, word: "Optimistic", phonetic: "/ˌɑːptɪˈmɪstɪk/", meaning: "樂觀的", category: "Emotion" },
+            { id: 83, word: "Pessimistic", phonetic: "/ˌpesəˈmɪstɪk/", meaning: "悲觀的", category: "Emotion" },
+            { id: 84, word: "Relieved", phonetic: "/rɪˈliːvd/", meaning: "放心了、如釋重負", category: "Emotion" },
+            { id: 85, word: "Sincere", phonetic: "/sɪnˈsɪr/", meaning: "真誠的", category: "Emotion" },
+            { id: 86, word: "Tension", phonetic: "/ˈtenʃn/", meaning: "緊張狀態", category: "Emotion" },
+            { id: 87, word: "Vulnerable", phonetic: "/ˈvʌlnərəbl/", meaning: "脆弱的易受傷的", category: "Emotion" },
+            { id: 88, word: "Overwhelmed", phonetic: "/ˌoʊvərˈwelmd/", meaning: "應接不暇的、壓倒的", category: "Emotion" },
+            { id: 89, word: "Passionate", phonetic: "/ˈpæʃənət/", meaning: "熱血的、激昂的", category: "Emotion" },
+            { id: 90, word: "Serene", phonetic: "/səˈriːn/", meaning: "寧靜的、安詳的", category: "Emotion" },
+
+            // Useful Idioms (91-100)
+            { id: 91, word: "Break a leg", phonetic: "/breɪk ə leɡ/", meaning: "祝你成功（祝好運）", category: "Idiom" },
+            { id: 92, word: "Call it a day", phonetic: "/kɔːl ɪt ə deɪ/", meaning: "今天工作到此結束", category: "Idiom" },
+            { id: 93, word: "Piece of cake", phonetic: "/piːs əv keɪk/", meaning: "輕而易舉的事", category: "Idiom" },
+            { id: 94, word: "Under the weather", phonetic: "/ˈʌndər ðə ˈweðər/", meaning: "身體不舒服、微恙", category: "Idiom" },
+            { id: 95, word: "Bite the bullet", phonetic: "/baɪt ðə ˈbʊlɪt/", meaning: "咬緊牙關面對難關", category: "Idiom" },
+            { id: 96, word: "Hit the nail on the head", phonetic: "/hɪt ðə neɪl ɑːn ðə hed/", meaning: "說得針針見血、完全正確", category: "Idiom" },
+            { id: 97, word: "Cost an arm and a leg", phonetic: "/kɔːst ən ɑːrm ənd ə leɡ/", meaning: "花費極昂貴", category: "Idiom" },
+            { id: 98, word: "Spill the beans", phonetic: "/spɪl ðə biːnz/", meaning: "洩露祕密", category: "Idiom" },
+            { id: 99, word: "On cloud nine", phonetic: "/ɑːn klaʊd naɪn/", meaning: "興奮極了、樂不可支", category: "Idiom" },
+            { id: 100, word: "Once in a blue moon", phonetic: "/wʌns ɪn ə bluː muːn/", meaning: "千載難逢、難得一次", category: "Idiom" }
+        ];
+
+        // App state
+        let userStats = JSON.parse(localStorage.getItem('soundvocab_stats')) || {
+            totalPlays: 0,
+            correctPlays: 0,
+            spokenCount: 0
+        };
+
+        // Quiz State
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let activeQuizQuestions = [];
+        let currentTargetQuizWord = null;
+
+        // Speaking State
+        let currentSpeakWordIndex = 0;
+        let recognition = null;
+        let isListeningMic = false;
+
+        // Initialize App on load
+        window.onload = function() {
+            updateStatsDisplay();
+            initListeningQuiz();
+            initSpeakingPractice();
+            renderVocabularyGrid(vocabularyList);
+            setupSpeechRecognition();
+        };
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            const tabs = ['dashboard', 'listening', 'speaking', 'vocabulary'];
+            tabs.forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                if(navBtn) {
+                    navBtn.className = "px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-300 hover:text-white";
+                }
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if(activeBtn) {
+                activeBtn.className = "px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all bg-indigo-600 text-white shadow";
+            }
+
+            if(tabId === 'speaking') {
+                loadNewSpeakWord();
+            }
+        }
+
+        // Update Stats UI
+        function updateStatsDisplay() {
+            document.getElementById('stat-total-plays').innerText = userStats.totalPlays;
+            const accuracy = userStats.totalPlays > 0 ? Math.round((userStats.correctPlays / userStats.totalPlays) * 100) : 0;
+            document.getElementById('stat-accuracy').innerText = accuracy + '%';
+            document.getElementById('stat-spoken-count').innerText = userStats.spokenCount;
+            localStorage.setItem('soundvocab_stats', JSON.stringify(userStats));
+        }
+
+        // Web Speech API: Text-to-Speech
+        function speakText(text, rate = 1.0) {
+            if (!('speechSynthesis' in window)) {
+                console.warn('Speech Synthesis not supported in this browser.');
+                return;
+            }
+            window.speechSynthesis.cancel(); // Stop any ongoing speech
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = rate;
+            
+            // Visual indicator on speaker
+            const icon = document.getElementById('speaker-icon');
+            if(icon) {
+                icon.classList.add('text-indigo-300', 'scale-110');
+                setTimeout(() => icon.classList.remove('text-indigo-300', 'scale-110'), 500);
+            }
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- LISTENING QUIZ LOGIC ---
+        function initListeningQuiz() {
+            // Shuffle vocabulary for quiz questions
+            activeQuizQuestions = [...vocabularyList].sort(() => 0.5 - Math.random()).slice(0, 10);
+            currentQuizIndex = 0;
+            quizScore = 0;
+            loadListeningQuestion();
+        }
+
+        function restartListeningQuiz() {
+            initListeningQuiz();
+        }
+
+        function loadListeningQuestion() {
+            if(currentQuizIndex >= activeQuizQuestions.length) {
+                // Quiz completed
+                document.getElementById('quiz-options-container').innerHTML = `
+                    <div class="col-span-2 text-center py-8 space-y-4">
+                        <div class="text-4xl">🎉</div>
+                        <h4 class="text-xl font-bold text-white">聽力挑戰完成！</h4>
+                        <p class="text-slate-300">總得分：${quizScore} / 10 題</p>
+                        <button onclick="initListeningQuiz()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-xl transition">
+                            再次挑戰
+                        </button>
+                    </div>
+                `;
+                document.getElementById('quiz-feedback').classList.add('hidden');
+                document.getElementById('next-quiz-btn').classList.add('hidden');
+                return;
+            }
+
+            currentTargetQuizWord = activeQuizQuestions[currentQuizIndex];
+            document.getElementById('quiz-progress').innerText = `題目: ${currentQuizIndex + 1} / 10`;
+            document.getElementById('quiz-score').innerText = `得分: ${quizScore}`;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('next-quiz-btn').classList.add('hidden');
+
+            // Generate 3 random wrong options + 1 correct option
+            const wrongOptions = vocabularyList
+                .filter(v => v.id !== currentTargetQuizWord.id)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+            
+            const options = [...wrongOptions, currentTargetQuizWord].sort(() => 0.5 - Math.random());
+
+            const container = document.getElementById('quiz-options-container');
+            container.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 p-4 rounded-2xl text-left font-medium transition flex justify-between items-center group";
+                btn.innerHTML = `
+                    <span>${opt.meaning}</span>
+                    <span class="text-xs text-slate-500 group-hover:text-indigo-300 font-mono">${opt.category}</span>
+                `;
+                btn.onclick = () => checkQuizAnswer(opt.id, btn);
+                container.appendChild(btn);
+            });
+
+            // Automatically speak word on load
+            setTimeout(() => playCurrentQuizAudio(), 400);
+        }
+
+        function playCurrentQuizAudio(rate = 1.0) {
+            if(currentTargetQuizWord) {
+                speakText(currentTargetQuizWord.word, rate);
+            }
+        }
+
+        function checkQuizAnswer(selectedId, buttonEl) {
+            const buttons = document.getElementById('quiz-options-container').getElementsByTagName('button');
+            for(let b of buttons) {
+                b.disabled = true; // Disable all
+                if(b.innerText.includes(vocabularyList.find(v => v.id === currentTargetQuizWord.id).meaning)) {
+                    b.classList.add('bg-emerald-600/30', 'border-emerald-500', 'text-emerald-200');
+                }
+            }
+
+            userStats.totalPlays++;
+            const isCorrect = selectedId === currentTargetQuizWord.id;
+
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            if(isCorrect) {
+                quizScore++;
+                userStats.correctPlays++;
+                buttonEl.classList.add('bg-emerald-600/40', 'border-emerald-500', 'text-emerald-100');
+                feedback.className = "mt-6 p-4 rounded-2xl text-center font-medium text-sm bg-emerald-950/80 border border-emerald-500/50 text-emerald-200";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i>答對了！正確答案是：<strong>${currentTargetQuizWord.word}</strong> (${currentTargetQuizWord.phonetic}) - ${currentTargetQuizWord.meaning}`;
+            } else {
+                buttonEl.classList.add('bg-rose-600/40', 'border-rose-500', 'text-rose-100');
+                feedback.className = "mt-6 p-4 rounded-2xl text-center font-medium text-sm bg-rose-950/80 border border-rose-500/50 text-rose-200";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark mr-2"></i>答錯囉！正確單字是：<strong>${currentTargetQuizWord.word}</strong> (${currentTargetQuizWord.phonetic}) - ${currentTargetQuizWord.meaning}`;
+            }
+
+            updateStatsDisplay();
+            document.getElementById('next-quiz-btn').classList.remove('hidden');
+        }
+
+        function nextListeningQuestion() {
+            currentQuizIndex++;
+            loadListeningQuestion();
+        }
+
+        // --- SPEAKING & PRONUNCIATION PRACTICE LOGIC ---
+        let currentSpeakWord = null;
+
+        function loadNewSpeakWord() {
+            currentSpeakWord = vocabularyList[Math.floor(Math.random() * vocabularyList.length)];
+            document.getElementById('target-speak-word').innerText = currentSpeakWord.word;
+            document.getElementById('target-speak-def').innerText = `${currentSpeakWord.phonetic}  |  ${currentSpeakWord.meaning}`;
+            document.getElementById('speak-feedback').classList.add('hidden');
+            document.getElementById('spoken-result-box').innerText = "辨識結果將顯示於此...";
+        }
+
+        function playTargetSpeakAudio() {
+            if(currentSpeakWord) {
+                speakText(currentSpeakWord.word);
+            }
+        }
+
+        function setupSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                document.getElementById('mic-status-text').innerText = "您的瀏覽器不支援語音辨識 (建議使用 Chrome)";
+                document.getElementById('mic-btn').disabled = true;
+                return;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 3;
+
+            recognition.onstart = function() {
+                isListeningMic = true;
+                document.getElementById('mic-status-text').innerText = "聆聽中... 請清晰說出英文單字";
+                document.getElementById('mic-icon').classList.add('fa-beat');
+            };
+
+            recognition.onresult = function(event) {
+                const speechResult = event.results[0][0].transcript.trim();
+                document.getElementById('spoken-result-box').innerText = `你說的是: "${speechResult}"`;
+                validateSpokenWord(speechResult);
+            };
+
+            recognition.onerror = function(event) {
+                console.warn('Speech recognition error', event.error);
+                document.getElementById('mic-status-text').innerText = "辨識失敗或未偵測到聲音，請再試一次";
+                stopMicUI();
+            };
+
+            recognition.onend = function() {
+                stopMicUI();
+            };
+        }
+
+        function toggleSpeechRecognition() {
+            if(!recognition) {
+                alert('瀏覽器語音辨識未初始化');
+                return;
+            }
+            if(isListeningMic) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+        }
+
+        function stopMicUI() {
+            isListeningMic = false;
+            document.getElementById('mic-icon').classList.remove('fa-beat');
+            document.getElementById('mic-status-text').innerText = "點擊咪高峰開始說話";
+        }
+
+        function validateSpokenWord(spoken) {
+            if(!currentSpeakWord) return;
+            const target = currentSpeakWord.word.toLowerCase();
+            const cleanSpoken = spoken.toLowerCase().replace(/[^a-z\s]/g, '');
+
+            const feedback = document.getElementById('speak-feedback');
+            feedback.classList.remove('hidden');
+
+            userStats.totalPlays++;
+
+            // Check if match contains target word
+            if(cleanSpoken.includes(target) || target.includes(cleanSpoken)) {
+                userStats.correctPlays++;
+                userStats.spokenCount++;
+                feedback.className = "p-4 rounded-2xl text-center font-medium text-sm bg-emerald-950/80 border border-emerald-500/50 text-emerald-200";
+                feedback.innerHTML = `<i class="fa-solid fa-star text-amber-400 mr-2"></i>太棒了！發音完全正確 (${currentSpeakWord.word})！`;
+            } else {
+                feedback.className = "p-4 rounded-2xl text-center font-medium text-sm bg-amber-950/80 border border-amber-500/50 text-amber-200";
+                feedback.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i>發音與 "${currentSpeakWord.word}" 稍有不同 (你說了: ${spoken})，再試一次！`;
+            }
+
+            updateStatsDisplay();
+        }
+
+        // --- VOCABULARY BANK LOGIC ---
+        function renderVocabularyGrid(list) {
+            const grid = document.getElementById('vocab-grid');
+            grid.innerHTML = '';
+
+            if(list.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400">找不到符合條件的單字</div>`;
+                return;
+            }
+
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-800/50 border border-slate-700/60 p-4 rounded-2xl flex flex-col justify-between hover:border-indigo-500/50 transition";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">${item.category}</span>
+                            <button onclick="speakText('${item.word}')" class="w-8 h-8 rounded-xl bg-slate-700/60 hover:bg-indigo-600 text-slate-300 hover:text-white flex items-center justify-center transition">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mt-2">${item.word}</h4>
+                        <p class="text-xs text-indigo-300 font-mono">${item.phonetic}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-700/50 flex justify-between items-center">
+                        <span class="text-sm text-slate-200">${item.meaning}</span>
+                        <span class="text-xs text-slate-500">#${item.id}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterVocabulary() {
+            const query = document.getElementById('vocab-search').value.toLowerCase();
+            const category = document.getElementById('vocab-category-filter').value;
+
+            const filtered = vocabularyList.filter(item => {
+                const matchesQuery = item.word.toLowerCase().includes(query) || item.meaning.includes(query);
+                const matchesCategory = category === 'all' || item.category === category;
+                return matchesQuery && matchesCategory;
+            });
+
+            renderVocabularyGrid(filtered);
+        }
+    </script>
+</body>
+</html>
